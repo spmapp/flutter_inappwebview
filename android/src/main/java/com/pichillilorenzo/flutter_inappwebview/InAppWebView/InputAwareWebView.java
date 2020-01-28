@@ -3,6 +3,7 @@ package com.pichillilorenzo.flutter_inappwebview.InAppWebView;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.webkit.WebView;
 /**
  * A WebView subclass that mirrors the same implementation hacks that the system WebView does in
  * order to correctly create an InputConnection.
- *
+ * <p>
  * https://github.com/flutter/plugins/blob/master/packages/webview_flutter/android/src/main/java/io/flutter/plugins/webviewflutter/InputAwareWebView.java
  */
 public class InputAwareWebView extends WebView {
@@ -67,7 +68,9 @@ public class InputAwareWebView extends WebView {
         proxyAdapterView.setLocked(true);
     }
 
-    /** Sets the proxy adapter view back to its default behavior. */
+    /**
+     * Sets the proxy adapter view back to its default behavior.
+     */
     public void unlockInputConnection() {
         if (proxyAdapterView == null) {
             return;
@@ -76,7 +79,9 @@ public class InputAwareWebView extends WebView {
         proxyAdapterView.setLocked(false);
     }
 
-    /** Restore the original InputConnection, if needed. */
+    /**
+     * Restore the original InputConnection, if needed.
+     */
     void dispose() {
         resetInputConnection();
     }
@@ -190,7 +195,9 @@ public class InputAwareWebView extends WebView {
                         // onCreateInputConnection() on targetView on the same thread as
                         // targetView.getHandler(). It will also call subsequent InputConnection methods on this
                         // thread. This is the IME thread in cases where targetView is our proxyAdapterView.
-                        imm.isActive(containerView);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                            imm.isActive(containerView);
+                        }
                     }
                 });
     }

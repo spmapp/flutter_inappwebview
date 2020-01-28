@@ -650,16 +650,8 @@ final public class InAppWebView extends InputAwareWebView {
     settings.setSansSerifFontFamily(options.sansSerifFontFamily);
     settings.setSerifFontFamily(options.serifFontFamily);
     settings.setStandardFontFamily(options.standardFontFamily);
-    if (options.preferredContentMode != null) {
-      switch (fromValue(options.preferredContentMode)) {
-        case DESKTOP:
-          setDesktopMode(true);
-          break;
-        case MOBILE:
-        case RECOMMENDED:
-          setDesktopMode(false);
-          break;
-      }
+    if (options.preferredContentMode == PreferredContentModeOptionType.DESKTOP.toValue()) {
+      setDesktopMode(true);
     }
     settings.setSaveFormData(options.saveFormData);
     if (options.incognito)
